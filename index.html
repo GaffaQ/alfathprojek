@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jual Barang Bekas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            border: 2px solid black;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Jual Barang Bekas</h1>
+    <div class="container" id="product-list"></div>
+
+    <div class="modal" id="modal">
+        <p id="modal-text"></p>
+        <button onclick="proceedPurchase()">Lanjutkan</button>
+        <button onclick="closeModal()">Batalkan</button>
+    </div>
+
+    <script>
+        const products = [
+            { name: "Kertas", price: 5000, img: "https://i.pinimg.com/736x/bb/97/b9/bb97b9911b8f61672a7dff0a06c4a27a.jpg" },
+            { name: "Plastik", price: 5000, img: "https://i.pinimg.com/236x/cb/89/f6/cb89f60fa3d079f973ec83a733130a52.jpg" },
+            { name: "Logam", price: 5000, img: "https://i.pinimg.com/736x/7d/ba/95/7dba953e762cb6484bc922107acb8d3c.jpg" },
+            { name: "Kain", price: 5000, img: "https://i.pinimg.com/236x/06/0e/f0/060ef0269bed3d8a8d4186e00f12040c.jpg" },
+            { name: "Karet", price: 5000, img: "https://i.pinimg.com/236x/7e/18/28/7e1828d3071ca15e8efdd4255115609d.jpg" },
+            { name: "Kayu/ranting", price: 5000, img: "https://i.pinimg.com/236x/fe/99/b6/fe99b6496bf72cf0ba1245e02ef1a5ef.jpg" }
+        ];
+
+        const productList = document.getElementById("product-list");
+        let selectedProduct = null;
+        let selectedQuantity = 1;
+
+        function renderProducts() {
+            products.forEach(product => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <img src="${product.img}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Harga: Rp ${product.price}/kg</p>
+                    <div class="button-group">
+                        <button onclick="buy('${product.name}', ${product.price})">Beli</button>
+                        <button onclick="increase('${product.name}')">Tambah (<span id="qty-${product.name}">1</span>)</button>
+                    </div>
+                `;
+                productList.appendChild(card);
+            });
+        }
+
+        function increase(productName) {
+            const qtyElement = document.getElementById(`qty-${productName}`);
+            let qty = parseInt(qtyElement.textContent);
+            qty++;
+            qtyElement.textContent = qty;
+        }
+
+        function buy(productName, price) {
+            selectedProduct = productName;
+            selectedQuantity = parseInt(document.getElementById(`qty-${productName}`).textContent);
+            const totalPrice = selectedQuantity * price;
+            document.getElementById("modal-text").textContent = `Saya ingin membeli ${selectedProduct} sebanyak ${selectedQuantity} kg dengan harga Rp ${totalPrice}`;
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function proceedPurchase() {
+            const totalPrice = selectedQuantity * 5000;
+            const message = `Saya ingin membeli ${selectedProduct} sebanyak ${selectedQuantity} kg dengan harga Rp ${totalPrice}`;
+            const whatsappUrl = `https://wa.me/6282170054802?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, "_blank");
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        renderProducts();
+    </script>
+</body>
+
+</html>
