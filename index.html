@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
+            flex-direction: column;
         }
 
         .container {
@@ -55,6 +56,11 @@
             border-radius: 10px;
             text-align: center;
         }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -65,6 +71,8 @@
         <input type="number" id="plastik" min="1" placeholder="Masukkan berat plastik">
         <button onclick="hitungKeuntungan()">Hitung</button>
     </div>
+
+    <p class="footer">Created by <a href="https://www.instagram.com/gaffaaq/" target="_blank">@gaffaaq</a></p>
 
     <div class="modal" id="modal">
         <div class="modal-content">
